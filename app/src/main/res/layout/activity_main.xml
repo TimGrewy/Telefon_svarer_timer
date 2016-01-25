@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Vælg hvor lang tid din telefon skal ringen inden telefonsvarer tager over."
+        android:text="Vælg hvor lang tid din telefon skal ringe inden der viderestilles til telefonsvarer."
         android:id="@+id/textView"
         android:textSize="20sp"/>
 
@@ -75,7 +75,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tryk på udfør for at forespørge/ændrer din telefonsvarer med det valgte indstilling"
+        android:text="Tryk på udfør for at forespørge/ændrer din telefonsvarer med det valgte indstilling."
         android:id="@+id/textView2"
         android:layout_above="@+id/button"
         android:layout_alignParentLeft="true"

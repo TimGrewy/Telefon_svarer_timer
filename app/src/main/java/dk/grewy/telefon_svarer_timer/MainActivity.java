@@ -98,8 +98,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("startDailer", "Missing permissions!");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
         } else {
-            showPopup("tel:" + dial);
-            //startActivity(intent);
+            startActivity(intent);
         }
     }
 

@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,33 +24,69 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        fillSpinner();
+    }
+
+    private void fillSpinner() {
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.udbyder_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     public void doStuff(View view) {
+        String number = getNumberFromSpinnerChoise();
+
+        String dialCommand = getDailCommand(number);
+
+        startDailerOrRequestPermission(dialCommand);
+    }
+
+    public void showCommand(View view) {
+        String number = getNumberFromSpinnerChoise();
+
+        String dialCommand = getDailCommand(number);
+
+        showPopup(dialCommand);
+    }
+
+    private String getDailCommand(String number) {
         int selectedId = radioGroup.getCheckedRadioButtonId();
         Log.i("someTag", "Selected: " + selectedId);
         if (selectedId == -1) {
             Log.i("bla", "Du har ikke valgt noget!!!");
+            return null;
         } else {
-            RadioButton radioSexButton = (RadioButton) findViewById(selectedId);
-            if (radioSexButton.getId() == R.id.radioButtonTjek) {
-                Log.i("bla bla", "Tjek tid");
-                startDailer("*#61#");
-            } else if (radioSexButton.getId() == R.id.radioButton15) {
-                Log.i("bla bla", "15 valgt");
-                startDailer("**61*004540900700**15#");
-            } else if (radioSexButton.getId() == R.id.radioButton20) {
-                Log.i("bla bla", "20 valgt");
-                startDailer("**61*004540900700**20#");
-            } else if (radioSexButton.getId() == R.id.radioButton30) {
-                Log.i("bla bla", "30 valgt");
-                startDailer("**61*004540900700**30#");
-            } else if (radioSexButton.getId() == R.id.radioButtonDisable) {
-                Log.i("bla bla", "Disable valgt");
-                startDailer("##61#");
+            RadioButton selectedRadio = (RadioButton) findViewById(selectedId);
+            return getTeleCommand(number, selectedRadio);
+        }
+    }
+
+    private String getTeleCommand(String number, RadioButton radioSexButton) {
+        if (radioSexButton.getId() == R.id.radioButtonTjek) {
+            return "*#61#";
+        } else if (radioSexButton.getId() == R.id.radioButton15) {
+            return "**61*"+number+"**15#";
+        } else if (radioSexButton.getId() == R.id.radioButton20) {
+            return "**61*"+number+"**20#";
+        } else if (radioSexButton.getId() == R.id.radioButton30) {
+            return "**61*"+number+"**30#";
+        } else if (radioSexButton.getId() == R.id.radioButtonDisable) {
+            return "##61#";
+        }
+        return "Ukendt valg!";
+    }
+
+    private void startDailerOrRequestPermission(String dial) {
+        Log.i("startDialer", "Dialing: " + dial);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
+                showPopup("Brug for rettighed for at foretage opkald til din udbyder");
             } else {
-                Log.i("bla bla", "UKENDT valgt");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
             }
+        } else {
+            startDailerWithPermission(dial);
         }
     }
 
@@ -60,25 +98,13 @@ public class MainActivity extends AppCompatActivity {
             Log.e("startDailer", "Missing permissions!");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
         } else {
-            startActivity(intent);
-
+            showPopup("tel:" + dial);
+            //startActivity(intent);
         }
     }
-    private void startDailer(String dial) {
-        Log.i("startDialer", "Dialing: " + dial);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
-                // Show an expanation to the user *asynchronously* -- don't block this thread waiting for the user's response! After the user sees the explanation, try again to request the permission.
-                Toast.makeText(this, "Brug for rettighed", Toast.LENGTH_SHORT).show();
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-            }
-        } else {
-            startDailerWithPermission(dial);
-        }
+    private void showPopup(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -94,16 +120,24 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
+    private String getNumberFromSpinnerChoise() {
+        Spinner mySpinner=(Spinner) findViewById(R.id.spinner);
+        String choosenUdbyder = mySpinner.getSelectedItem().toString();
+
+        String[] mTestArray = getResources().getStringArray(R.array.udbyder_nummer_array);
+        for (int i = 0; i < mTestArray.length; i++) {
+            String udbyderValue = mTestArray[i];
+            String[] split = udbyderValue.split("#");
+            String udbyder = split[0];
+            String nummer = split[1];
+            if(udbyder.equals(choosenUdbyder)) {
+                return nummer;
+            }
+        }
+        Log.e("SpinnerChoise", "No possible value for: " + choosenUdbyder);
+        return null;
+    }
 }
-// TODO: Consider calling
-//    ActivityCompat#requestPermissions
-// here to request the missing permissions, and then overriding
-//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                                          int[] grantResults)
-// to handle the case where the user grants the permission. See the documentation
-// for ActivityCompat#requestPermissions for more details.
+

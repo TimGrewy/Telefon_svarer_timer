@@ -13,12 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vælg hvor lang tid din telefon skal ringen inden telefonsvarer tager over."
-        android:id="@+id/textView" />
+        android:id="@+id/textView"
+        android:textSize="20sp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Klargør opkald"
+        android:text="Udfør"
         android:id="@+id/button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -31,14 +32,14 @@
         android:id="@+id/radioGroup"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="91dp"
         android:layout_marginBottom="81dp"
         android:layout_above="@+id/textView2"
-        android:layout_below="@+id/textView"
         android:layout_alignRight="@+id/textView"
         android:layout_alignEnd="@+id/textView"
         android:layout_marginRight="153dp"
-        android:layout_marginEnd="153dp">
+        android:layout_marginEnd="153dp"
+        android:layout_below="@+id/textView">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -73,35 +74,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nu ringes op til din udbyder med en kode der vil indstille din telefonsvarer med det valgte - tryk ring op på næste skærmbillede"
+        android:text="Tryk på udfør for at forespørge/ændrer din telefonsvarer med det valgte indstilling"
         android:id="@+id/textView2"
         android:layout_above="@+id/button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Virker ikke - tast selv '*#61#' i din telefon"
-        android:id="@+id/textView3"
-        android:layout_alignTop="@+id/radioGroup"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/button"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Virker ikke - tast selv '##61#' i din telefon"
-        android:id="@+id/textView4"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/button"
-        android:layout_toRightOf="@+id/button"
-        android:layout_marginLeft="55dp"
-        android:layout_marginStart="55dp" />
 
 </RelativeLayout>

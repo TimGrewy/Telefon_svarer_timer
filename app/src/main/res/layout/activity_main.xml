@@ -24,7 +24,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="doStuff"/>
+        android:onClick="doCommand"/>
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -38,8 +38,8 @@
         android:layout_marginRight="153dp"
         android:layout_marginEnd="153dp"
         android:layout_above="@+id/textView2"
-        android:layout_below="@+id/spinner"
-        android:layout_marginTop="33dp">
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="149dp">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -75,20 +75,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tryk på udfør for at forespørge/ændrer din telefonsvarer med det valgte indstilling."
+        android:text="Tryk på udfør for at forespørge/ændre din telefonsvarer med det valgte indstilling."
         android:id="@+id/textView2"
         android:layout_above="@+id/button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="31dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -99,5 +91,28 @@
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:onClick="showCommand"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Åbn kontakter"
+        android:id="@+id/button3"
+        android:onClick="showPopupWindow"
+        android:layout_below="@+id/textView"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_marginTop="38dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/editTextTelefonSvarerNummer"
+        android:layout_alignTop="@+id/button3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Telefonsvarernummer"/>
 
 </RelativeLayout>

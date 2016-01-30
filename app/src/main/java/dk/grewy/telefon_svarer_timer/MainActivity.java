@@ -7,47 +7,68 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private RadioGroup radioGroup;
+    private Button b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        Intent intent = getIntent();
+        String number = intent.getStringExtra("number");
+        if(number != null) {
+            EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
+            numberField.setText(number);
+        }
+
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        fillSpinner();
+
     }
 
-    private void fillSpinner() {
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.udbyder_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-    }
-
-    public void doStuff(View view) {
-        String number = getNumberFromSpinnerChoise();
+    public void doCommand(View view) {
+        EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
+        String number = numberField.getText().toString();
+        if(number == null || number.trim().length() == 0) {
+            showToast("Du skal indtaste eller fremsøge nummer til din telefonsvarer");
+            return;
+        }
 
         String dialCommand = getDailCommand(number);
 
         startDailerOrRequestPermission(dialCommand);
     }
 
+    public void showPopupWindow(View view) {
+        EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
+        Log.i("asd", "showPop!!!");
+        startActivity(new Intent(MainActivity.this, Pop.class));
+    }
+
     public void showCommand(View view) {
-        String number = getNumberFromSpinnerChoise();
+        EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
+        String number = numberField.getText().toString();
+        if(number == null || number.trim().length() == 0) {
+            showToast("Du skal indtaste eller fremsøge nummer til din telefonsvarer");
+            return;
+        }
 
         String dialCommand = getDailCommand(number);
 
-        showPopup(dialCommand);
+        showToast(dialCommand);
     }
 
     private String getDailCommand(String number) {
@@ -81,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("startDialer", "Dialing: " + dial);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
-                showPopup("Brug for rettighed for at foretage opkald til din udbyder");
+                showToast("Brug for rettighed for at foretage opkald til din udbyder");
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
             }
@@ -96,13 +117,13 @@ public class MainActivity extends AppCompatActivity {
         intent.setData(Uri.parse("tel:" + Uri.encode(dial)));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             Log.e("startDailer", "Missing permissions!");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
             startActivity(intent);
         }
     }
 
-    private void showPopup(String msg) {
+    private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -120,23 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-    }
-    private String getNumberFromSpinnerChoise() {
-        Spinner mySpinner=(Spinner) findViewById(R.id.spinner);
-        String choosenUdbyder = mySpinner.getSelectedItem().toString();
-
-        String[] mTestArray = getResources().getStringArray(R.array.udbyder_nummer_array);
-        for (int i = 0; i < mTestArray.length; i++) {
-            String udbyderValue = mTestArray[i];
-            String[] split = udbyderValue.split("#");
-            String udbyder = split[0];
-            String nummer = split[1];
-            if(udbyder.equals(choosenUdbyder)) {
-                return nummer;
-            }
-        }
-        Log.e("SpinnerChoise", "No possible value for: " + choosenUdbyder);
-        return null;
     }
 }
 

@@ -30,7 +30,10 @@
         android:id="@+id/telefonsvarernummer"
         android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/textView5"
+        android:layout_toLeftOf="@+id/button4"
+        android:layout_toStartOf="@+id/button4" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -38,9 +41,12 @@
         android:layout_height="wrap_content"
         android:text="Brug nummer"
         android:id="@+id/button4"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:onClick="closePopup"/>
+        android:onClick="closePopup"
+        android:layout_below="@+id/textView3"
+        android:layout_toRightOf="@+id/textView5"
+        android:layout_toEndOf="@+id/textView5"
+        android:layout_marginLeft="37dp"
+        android:layout_marginStart="37dp" />
 
     <TextView
         android:layout_width="wrap_content"

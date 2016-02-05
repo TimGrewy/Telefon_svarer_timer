@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,14 +52,6 @@ public class Pop extends Activity {
         super.onCreate(savedInstanceState);
         Log.i("asd", "Opening popup");
         setContentView(R.layout.popwindow);
-
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-
-        getWindow().setLayout((int) (width * .8), (int) (height * .6));
 
         lv1 = (ListView) findViewById(R.id.listView);
         if (isPermissionNeeded()) {
@@ -103,9 +96,11 @@ public class Pop extends Activity {
             String name = curser.getString(curser.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = curser.getString(curser.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             if(name.equalsIgnoreCase("telefonsvarer")) {
+                setFoundFieldsVisible();
+
                 TextView telefonSvarerFelt = (TextView) findViewById(R.id.telefonsvarernummer);
                 telefonSvarerFelt.setText(phoneNumber);
-                showToast("Telefonsvarer nummer '"+phoneNumber+"' fundet i dine kontakter!");
+                showToast("Telefonsvarer nummer '" + phoneNumber + "' fundet i dine kontakter!");
             }
             if (name != null) {
                 sortedMap.put(name, phoneNumber);
@@ -133,6 +128,15 @@ public class Pop extends Activity {
             }
         });
         return curser;
+    }
+
+    private void setFoundFieldsVisible() {
+        TextView matchFoundText = (TextView) findViewById(R.id.matchFoundText);
+        matchFoundText.setVisibility(View.VISIBLE);
+        TextView telefonSvarerFelt = (TextView) findViewById(R.id.telefonsvarernummer);
+        telefonSvarerFelt.setVisibility(View.VISIBLE);
+        Button useAutoFoundButton = (Button) findViewById(R.id.useAutoFound);
+        useAutoFoundButton.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -26,17 +26,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        Intent intent = getIntent();
-        String number = intent.getStringExtra("number");
-        if(number != null) {
-            EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
-            numberField.setText(number);
-        }
+        setNumberFromPreviusIntent();
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
+    }
+
+    private void setNumberFromPreviusIntent() {
+        Intent intent = getIntent();
+        String number = intent.getStringExtra("number");
+        if(number != null) {
+            number = number.replace(" ", "");
+            number = number.replace("-", "");
+            number = number.replace("(", "");
+            number = number.replace(")", "");
+            EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
+            numberField.setText(number);
+        }
     }
 
     public void doCommand(View view) {
@@ -143,4 +149,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-

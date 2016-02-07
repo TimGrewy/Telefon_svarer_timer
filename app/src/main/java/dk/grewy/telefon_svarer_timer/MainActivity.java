@@ -44,10 +44,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void showPopupWindow(View view) {
+        EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
+        Log.i("asd", "showPop!!!");
+        startActivity(new Intent(MainActivity.this, Pop.class));
+    }
+
     public void doCommand(View view) {
         EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
         String number = numberField.getText().toString();
-        RadioButton selectedRadio = (RadioButton) findViewById(R.id.radioGroup);
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        RadioButton selectedRadio = (RadioButton) findViewById(selectedId);
         if(isTelefonSvarerNumberNeeded(selectedRadio) && isEmpty(number)) {
             showToast("Du skal indtaste eller fremsøge nummer til din telefonsvarer");
             return;
@@ -58,16 +65,11 @@ public class MainActivity extends AppCompatActivity {
         startDailerOrRequestPermission(dialCommand);
     }
 
-    public void showPopupWindow(View view) {
-        EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
-        Log.i("asd", "showPop!!!");
-        startActivity(new Intent(MainActivity.this, Pop.class));
-    }
-
     public void showCommand(View view) {
         EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
         String number = numberField.getText().toString();
-        RadioButton selectedRadio = (RadioButton) findViewById(R.id.radioGroup);
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        RadioButton selectedRadio = (RadioButton) findViewById(selectedId);
         if(isTelefonSvarerNumberNeeded(selectedRadio) && isEmpty(number)) {
             showToast("Du skal indtaste eller fremsøge nummer til din telefonsvarer");
             return;

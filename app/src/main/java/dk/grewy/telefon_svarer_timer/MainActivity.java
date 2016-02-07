@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     public void doCommand(View view) {
         EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
         String number = numberField.getText().toString();
-        if(number == null || number.trim().length() == 0) {
+        RadioButton selectedRadio = (RadioButton) findViewById(R.id.radioGroup);
+        if(isTelefonSvarerNumberNeeded(selectedRadio) && isEmpty(number)) {
             showToast("Du skal indtaste eller fremsøge nummer til din telefonsvarer");
             return;
         }
@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
     public void showCommand(View view) {
         EditText numberField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
         String number = numberField.getText().toString();
-        if(number == null || number.trim().length() == 0) {
+        RadioButton selectedRadio = (RadioButton) findViewById(R.id.radioGroup);
+        if(isTelefonSvarerNumberNeeded(selectedRadio) && isEmpty(number)) {
             showToast("Du skal indtaste eller fremsøge nummer til din telefonsvarer");
             return;
         }
@@ -147,5 +148,24 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    private boolean isTelefonSvarerNumberNeeded(RadioButton radioSexButton) {
+        if (radioSexButton.getId() == R.id.radioButtonTjek) {
+            return false;
+        } else if (radioSexButton.getId() == R.id.radioButton15) {
+            return true;
+        } else if (radioSexButton.getId() == R.id.radioButton20) {
+            return true;
+        } else if (radioSexButton.getId() == R.id.radioButton30) {
+            return true;
+        } else if (radioSexButton.getId() == R.id.radioButtonDisable) {
+            return false;
+        }
+        return false;
+    }
+
+    private boolean isEmpty(String string) {
+        return string == null || string.trim().length() == 0;
     }
 }

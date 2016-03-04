@@ -3,19 +3,23 @@ package dk.grewy.telefon_svarer_timer;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private RadioGroup radioGroup;
     private Button b;
@@ -25,9 +29,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setNumberFromPreviusIntent();
+//        setNumberFromPreviusIntent();
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.teleselskaber, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        Log.e("somecraphere", pos + "");
+        Resources res = getResources();
+        String[] telefonselskaberMedNummer = res.getStringArray(R.array.teleselskabermednummer);
+        String selected = telefonselskaberMedNummer[pos];
+        String[] split = selected.split("#");
+        if(split.length > 1) {
+            String nummer = split[1];
+            EditText nummerField = (EditText) findViewById(R.id.editTextTelefonSvarerNummer);
+            nummerField.setText(nummer + "");
+        }
+        if(split[0].equalsIgnoreCase("Mit selskab er ikke på listen")) {
+            String msg = "Se dit nummer ved at vælge \"Tjek nuværende tid\" og tryk UDFØR";
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        //Do nothing...
 
     }
 
@@ -61,8 +95,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String dialCommand = getDailCommand(number);
+        LogActivity.logCommand(dialCommand);
 
         startDailerOrRequestPermission(dialCommand);
+    }
+
+    public void showLog(View view) {
+        startActivity(new Intent(MainActivity.this, LogActivity.class));
     }
 
     public void showCommand(View view) {

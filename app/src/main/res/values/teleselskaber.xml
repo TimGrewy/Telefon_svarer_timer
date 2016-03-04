@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="teleselskaber">
+        <item>Vælg et teleselskab</item>
+        <item>3</item>
+        <item>Bibob</item> <!-- deres side siger: 60500000 -->
+        <item>CBB</item>
+        <item>Oister</item>
+        <item>TDC</item>
+        <item>Telenor</item>
+        <item>Telia</item>
+        <item>Telmore</item>
+        <item>Mit selskab er ikke på listen</item>
+    </string-array>
+    <string-array name="teleselskabermednummer">
+        <item>Vælg et teleselskab#</item>
+        <item>3#31133333</item>
+        <item>Bibob#40900700</item> <!-- deres side siger: 60500000 -->
+        <item>CBB#60606062</item>
+        <item>Oister#42919191</item>
+        <item>TDC#20171717</item>
+        <item>Telenor#60500000</item>
+        <item>Telia#28184000</item>
+        <item>Telmore#51100000</item>
+        <item>Mit selskab er ikke på listen#</item>
+    </string-array>
+</resources>
